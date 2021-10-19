@@ -3,6 +3,7 @@
 This is a simplified ansible playbook to install Polygon mainnet/testnet, I decided to publish it because I found the Polygon docs a bit confusing and not up-to-date.
 
 Note: This is to deploy a Full RPC Node, if you want to deploy a validator you'll need to do some more steps that are not covered here.
+Note2: The role is fully idempotent.
 
 This playbook creates the bor and heimdall services under a user's systemd, so you'll only be able to interact with it using the polygon user.
 
@@ -18,7 +19,7 @@ All variables are set in the group_vars, below are a few steps to take into acco
 
 2. Replace the value of `heimdall_eth_rpc_url` to an Ethereum RPC node, heimdall needs to query it from time to time.
 
-3. Set your mainnet and testnet node under inventory/hosts
+3. Set your mainnet and testnet nodes IPs under inventory/hosts
 
 
 ## Deploying nodes
