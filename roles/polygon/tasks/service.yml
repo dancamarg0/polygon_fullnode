@@ -17,14 +17,6 @@
     mode: 0644
   loop: ['bor.service','heimdalld.service','heimdalld-rest-server.service']
 
-- name: Copy shortcut to check polygon heimdall chain status
-  copy:
-    src: tf
-    dest: "{{ polygon_user_home }}/bin/tf"
-    owner: "{{ polygon_user }}"
-    group: "{{ polygon_user }}"
-    mode: 0750
-
 - name: ensure xdg runtime dir is set in bashrc
   lineinfile:
     path: "/home/{{ polygon_user }}/.bashrc"
