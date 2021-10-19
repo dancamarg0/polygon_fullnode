@@ -3,7 +3,6 @@
 This is a simplified ansible playbook to install Polygon mainnet/testnet, I decided to publish it because I found the Polygon docs a bit confusing and not up-to-date.
 
 Note: This is to deploy a Full RPC Node, if you want to deploy a validator you'll need to do some more steps that are not covered here.
-Note2: The role is fully idempotent.
 
 This playbook creates the bor and heimdall services under a user's systemd, so you'll only be able to interact with it using the polygon user.
 
@@ -13,7 +12,7 @@ sudo su - polygon
 systemctl --user status bor
 ```
 
-All variables are set in the group_vars, below are a few steps to take into account before initiating the deploy:
+The playbook is fully idempotent and all variables are set in the group_vars, below are a few steps to take into account before initiating the deploy:
 
 1. Check if we're pulling the latest version of heimdall and bor, you can find the one being used on `heimdall_version` and `bor_version`.
 
