@@ -37,9 +37,9 @@ Note: It'll deploy the mainnet and testnet nodes at the same time, you can deplo
 
 ## Using tags
 
-I've included some tags on roles/polygon/main.yml to make things easy when we need to just update one service or a set of tasks.
+I've included some tags on roles/polygon/main.yml to make things easier when we need to update just one service or a set of tasks.
 
-Say you've updated a parameter in the heimdalld.service and you just want to update it, you can run: `ansible-playbook playbook.yml -i inventory/hosts -K --tags heimdall_install`
+Say you've updated a parameter in the heimdalld.service and you just want to update it in the remote host, you can run: `ansible-playbook playbook.yml -i inventory/hosts -K --tags heimdall_install`
 
 ## Post deploy
 
@@ -51,19 +51,19 @@ Note: You better download it in a tmux window + nohup or something similar for t
 
 ### Heimdall mainnet
 
-cd /polygon/heimdall/data/
-tmux new -s heimdall
-nohup curl https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/heimdall-snapshot-2021-10-19.tar.gz > /dev/null
-tar -zxvf heimdall-snapshot-2021-10-19.tar.gz 
-Ctrl + b then hit `d` to detach.
+1. cd /polygon/heimdall/data/
+2. tmux new -s heimdall
+3. nohup curl https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/heimdall-snapshot-2021-10-19.tar.gz > /dev/null
+4. tar -zxvf heimdall-snapshot-2021-10-19.tar.gz 
+5. Ctrl + b then hit `d` to detach.
 
 ### Bor mainnet
 
-cd /polygon/bor/data/bor/chaindata/
-tmux new -s bor
-nohup curl https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/bor-pruned-snapshot-2021-10-18.tar.gz > /dev/null
-tar -zxvf bor-pruned-snapshot-2021-10-18.tar.gz
-Ctrl + b then hit `d` to detach.
+1. cd /polygon/bor/data/bor/chaindata/
+2. tmux new -s bor
+3. nohup curl https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/bor-pruned-snapshot-2021-10-18.tar.gz > /dev/null
+4. tar -zxvf bor-pruned-snapshot-2021-10-18.tar.gz
+5. Ctrl + b then hit `d` to detach.
 
 
 Follow the same steps for testnet.
