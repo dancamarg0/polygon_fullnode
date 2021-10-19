@@ -25,7 +25,7 @@ The playbook is fully idempotent and all variables are set in the group_vars, be
 
 Run the following command: `ansible-playbook playbook.yml -i inventory/hosts -K`. It's going to install golang-go first and then start with polygon deployment, if you don't need the golang-go tasks just delete it from playbook.yml
 
-Note: It'll deploy the mainnet and testnet nodes at the same time, you can deploy one at each time by specifying `-l mainnet/testnet`
+Note: It'll deploy the mainnet and testnet nodes at the same time, you can deploy one at each time by appending `-l mainnet/testnet` to the command above.
 
 ## Using tags
 
