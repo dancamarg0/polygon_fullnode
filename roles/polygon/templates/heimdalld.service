@@ -1,0 +1,14 @@
+[Unit]
+Description=heimdalld
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+Restart=on-failure
+RestartSec=5s
+WorkingDirectory={{ polygon_node_home }}
+ExecStart={{ polygon_user_home }}/bin/heimdalld start --home {{ polygon_node_home }}/heimdall
+Type=simple
+
+[Install]
+WantedBy=default.target

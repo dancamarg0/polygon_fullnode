@@ -1,0 +1,7 @@
+- name: update ssl certificates
+  hosts:
+    - polygon
+  become: true
+  tasks:
+    - import_role: 
+        name: polygon

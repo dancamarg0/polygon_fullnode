@@ -1,0 +1,35 @@
+---
+
+- name: Add seed nodes
+  lineinfile:
+    path: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "{{ item.key }}"
+    state: present
+  with_dict:
+    seeds: '"{{ heimdall_seeds }}"'
+  when: heimdall_seeds is defined and heimdall_seeds|length > 0
+
+- name: Update prometheus config
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    regexp: "^prometheus ="
+    insertafter: "[instrumentation]"
+    line: 'prometheus = true'
+    state: present
+
+- name: Update max up connections
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    regexp: "^max_open_connections ="
+    insertafter: "[instrumentation]"
+    line: 'max_open_connections = {{ heimdall_max_open_connections }}'
+    state: present
+
+- name: Enable the peer-exchange reactor
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    regexp: "^pex ="
+    insertafter: "[instrumentation]"
+    line: 'pex = true'
+    state: present

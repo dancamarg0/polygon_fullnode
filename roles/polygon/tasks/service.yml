@@ -1,0 +1,57 @@
+---
+
+- name: ensure systemd user dir is available
+  file:
+    path: "{{ polygon_user_home }}/.config/systemd/user"
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0750
+    state: directory
+
+- name: Create service files
+  template:
+    src: "{{ item }}"
+    dest: "{{ polygon_user_home }}/.config/systemd/user/{{ item }}"
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0644
+  loop: ['bor.service','heimdalld.service','heimdalld-rest-server.service']
+
+- name: Copy shortcut to check polygon heimdall chain status
+  copy:
+    src: tf
+    dest: "{{ polygon_user_home }}/bin/tf"
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0750
+
+- name: ensure xdg runtime dir is set in bashrc
+  lineinfile:
+    path: "/home/{{ polygon_user }}/.bashrc"
+    regexp: "^export XDG_RUNTIME_DIR"
+    line: "export XDG_RUNTIME_DIR=/run/user/$(id -u)"
+
+- name: ensure polygon user can use lingering systemd # It's necessary so that the service won't be shut down when there is no session for this user
+  command: loginctl enable-linger {{ polygon_user }}
+
+- name: ensure polygon user is part of systemd-journal group
+  user:
+    name: "{{ polygon_user }}"
+    groups: systemd-journal
+    append: yes
+
+- name: register uid of polygon user
+  shell: "id -u {{ polygon_user }}"
+  register: polygon_user_uid
+
+- name: setup service
+  systemd:
+    daemon_reload: true
+    name: "{{ item }}"
+    enabled: yes
+    scope: user
+  become: true
+  become_user: "{{ polygon_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ polygon_user_uid.stdout }}"
+  loop: ['bor.service','heimdalld.service','heimdalld-rest-server.service']

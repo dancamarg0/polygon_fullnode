@@ -1,0 +1,43 @@
+---
+
+- name: Ensure build dependencies exists
+  apt:
+    name: ['make', 'git', 'unzip', 'gcc','build-essential']
+    state: present
+
+- name: create polygon user
+  user: 
+    name: "{{ polygon_user }}"
+    password: '!'
+    shell: /bin/bash
+
+- name: Ensure polygon directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0755
+  loop: 
+    - "{{ polygon_node_home }}"
+    - "{{ polygon_user_home }}/bin"
+    - "/usr/local/src/heimdall"
+    - "/usr/local/src/bor"
+    - "/usr/local/src/polygon_node"
+
+- name: Install RabbitMq
+  import_tasks: rabbitmq.yml
+
+- name: Install Heimdall
+  import_tasks: heimdall.yml
+  become_user: "{{ polygon_user }}"
+  tags: heimdall_install
+
+- name: Install Bor
+  import_tasks: bor.yml
+  become_user: "{{ polygon_user }}"
+  tags: bor_install
+
+- name: Install service files
+  import_tasks: service.yml
+  tags: polygon_service

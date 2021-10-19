@@ -1,0 +1,16 @@
+polygon_user: polygon
+polygon_node_home: /polygon
+polygon_user_home: "/home/{{ polygon_user }}"
+polygon_network: testnet-v4
+polygon_node_type: sentry
+
+# Heimdall
+heimdall_seeds: "4cd60c1d76e44b05f7dfd8bab3f447b119e87042@54.147.31.250:26656,b18bbe1f3d8576f4b73d9b18976e71c65e839149@34.226.134.117:26656"
+heimdall_version: v0.2.2 # See https://github.com/maticnetwork/heimdall
+heimdall_max_open_connections: 100
+heimdall_eth_rpc_url: http://<ETHEREUM_RPC_NODE>:8545
+
+# Bor
+bor_version: v0.2.9-beta1 # See https://github.com/maticnetwork/bor
+bor_seeds: "enode://320553cda00dfc003f499a3ce9598029f364fbb3ed1222fdc20a94d97dcc4d8ba0cd0bfa996579dcc6d17a534741fb0a5da303a90579431259150de66b597251@54.147.31.250:30303,enode://f0f48a8781629f95ff02606081e6e43e4aebd503f3d07fc931fad7dd5ca1ba52bd849a6f6c3be0e375cf13c9ae04d859c4a9ae3546dc8ed4f10aa5dbb47d4998@34.226.134.117:30303,enode://0a9dded21b1b332376a3a255d2aaf1b4a5d279d99a71be9dd3c7328d3ebdd2986840016eef614fba57b719380e92e6a2b79b640e55e651dab48f36770eea1926@54.147.31.250:30303"
+bor_network_id: 80001

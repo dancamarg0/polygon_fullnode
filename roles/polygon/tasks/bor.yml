@@ -1,0 +1,50 @@
+---
+
+- name: Get bor source code
+  git:
+    repo: "https://github.com/maticnetwork/bor"
+    dest: "/usr/local/src/bor"
+    version: "{{ bor_version }}"
+
+- name: Build bor binary
+  shell: make bor-all
+  args:
+    chdir: "/usr/local/src/bor"
+  environment:
+    PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/usr/local/go/bin
+
+- name: Copy binariy to polygon user home
+  copy:
+    src: "{{ polygon_user_home }}/go/bin/{{ item }}"
+    dest: "{{ polygon_user_home }}/bin"
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0750
+    remote_src: yes
+  loop: ['bor','bootnode']
+
+- name: Ensure bor directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop: 
+    - "{{ polygon_node_home }}/bor"
+    - "{{ polygon_node_home }}/bor/data"
+
+- name: Download genesis file
+  get_url:
+    url: https://raw.githubusercontent.com/maticnetwork/launch/master/{{ polygon_network }}/sentry/sentry/bor/genesis.json
+    dest: "{{ polygon_node_home }}/bor/genesis.json"
+
+- name: Init bor genesis
+  shell: "{{ polygon_user_home }}/bin/bor --datadir {{ polygon_node_home }}/bor/data init {{ polygon_node_home }}/bor/genesis.json"
+  args:
+    creates: "{{ polygon_node_home }}/bor/data/bor/nodekey"
+  
+- name: Copy start script
+  template:
+    src: bor_start.sh
+    dest: "{{ polygon_user_home }}/bin"
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0750

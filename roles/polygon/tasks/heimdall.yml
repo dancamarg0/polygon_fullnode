@@ -1,0 +1,69 @@
+---
+
+- name: Get Heimdall source code
+  git:
+    repo: "https://github.com/maticnetwork/heimdall"
+    dest: "/usr/local/src/heimdall"
+    version: "{{ heimdall_version }}"
+
+- name: Build Heimdall binary
+  shell: make install
+  args:
+    chdir: "/usr/local/src/heimdall"
+  environment:
+    PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/usr/local/go/bin
+
+- name: Copy binariy to polygon user home
+  copy:
+    src: "{{ polygon_user_home }}/go/bin/{{ item }}"
+    dest: "{{ polygon_user_home }}/bin"
+    owner: "{{ polygon_user }}"
+    group: "{{ polygon_user }}"
+    mode: 0750
+    remote_src: yes
+  loop: ['heimdalld','heimdallcli']
+
+- name: Init heimdall node
+  shell: "{{ polygon_user_home }}/go/bin/heimdalld init --home {{ polygon_node_home }}/heimdall --chain-id {{ polygon_network }}"
+  args:
+    creates: "{{ polygon_node_home }}/heimdall/config/config.toml"
+
+- name: Add seed nodes
+  lineinfile:
+    path: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "{{ item.key }}"
+    state: present
+  with_dict:
+    seeds: '"{{ heimdall_seeds }}"'
+
+- name: Update prometheus config
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    regexp: "^prometheus ="
+    insertafter: "[instrumentation]"
+    line: 'prometheus = true'
+    state: present
+
+- name: Update max up connections
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    regexp: "^max_open_connections ="
+    insertafter: "[instrumentation]"
+    line: 'max_open_connections = {{ heimdall_max_open_connections }}'
+    state: present
+
+- name: Enable the peer-exchange reactor
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/config.toml"
+    regexp: "^pex ="
+    insertafter: "[instrumentation]"
+    line: 'pex = true'
+    state: present
+
+- name: Insert Eth RPC URL
+  lineinfile:
+    dest: "{{ polygon_node_home }}/heimdall/config/heimdall-config.toml"
+    regexp: "^eth_rpc_url ="
+    line: 'eth_rpc_url = "{{ heimdall_eth_rpc_url }}"'
+    state: present

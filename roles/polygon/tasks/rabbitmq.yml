@@ -1,0 +1,9 @@
+---
+
+- name: Copy Cloudsmith quick start script
+  copy:
+    src: rabbitmq_install.sh
+    dest: /root/rabbitmq_install.sh
+
+- name: Run quickstart script
+  shell: /bin/bash /root/rabbitmq_install.sh

@@ -1,0 +1,11 @@
+[Unit]
+Description=bor
+
+[Service]
+Restart=always
+WorkingDirectory={{ polygon_node_home }}
+ExecStart={{ polygon_user_home }}/bin/bor_start.sh
+Type=simple
+
+[Install]
+WantedBy=default.target
