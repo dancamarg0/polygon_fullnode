@@ -23,15 +23,15 @@ The playbook is fully idempotent and all variables are set in the group_vars, be
 
 ## Deploying nodes
 
-Run the following command: `ansible-playbook playbook.yml -i inventory/hosts`
+Run the following command: `ansible-playbook playbook.yml -i inventory/hosts -K`. It's going to install golang-go first and then start with polygon deployment, if you don't need the golang-go tasks just delete it from playbook.yml
 
-Note: It'll deploy the mainnet and testnet node at the same time, you can deploy one at each time by specifying `-l mainnet/testnet`
+Note: It'll deploy the mainnet and testnet nodes at the same time, you can deploy one at each time by specifying `-l mainnet/testnet`
 
 ## Using tags
 
 I've included some tags on roles/polygon/main.yml to make things easy when we need to just update one service or a set of tasks.
 
-Say you've updated a parameter in the heimdalld.service and you just want to update it, you can run: `ansible-playbook playbook.yml -i inventory/hosts --tags heimdall_install`
+Say you've updated a parameter in the heimdalld.service and you just want to update it, you can run: `ansible-playbook playbook.yml -i inventory/hosts -K --tags heimdall_install`
 
 ## Post deploy
 
