@@ -1,0 +1,35 @@
+---
+
+- name: Remove go package from Ubuntu repository
+  apt:
+    pkg: 'golang-go'
+    state: absent
+
+- name: Download go
+  get_url:
+    url: "https://golang.org/dl/go{{ go_version }}.linux-amd64.tar.gz"
+    dest: "/usr/local/src/go{{ go_version }}.linux-amd64.tar.gz"
+    mode: 0644
+    owner: root
+    group: root
+    checksum: "{{ go_version_checksum }}"
+  register: go_download
+
+- name: Remove old go directory if new version
+  file:
+    path: /usr/local/go
+    state: absent
+  when: go_download.changed
+
+- name: unarchive go
+  unarchive:
+    src: "/usr/local/src/go{{ go_version }}.linux-amd64.tar.gz"
+    dest: /usr/local/
+    remote_src: yes
+
+- name: Ensure go directory is in PATH
+  lineinfile:
+    path: /etc/environment
+    backrefs: yes
+    regexp: 'PATH=(["]*)((?!.*?/usr/local/go/bin).*?)(["]*)$'
+    line: 'PATH=\1\2:/usr/local/go/bin\3'

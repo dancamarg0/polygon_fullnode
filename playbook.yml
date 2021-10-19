@@ -3,5 +3,7 @@
     - polygon
   become: true
   tasks:
+    - import_role:
+        name: golang-go
     - import_role: 
         name: polygon

@@ -2,7 +2,7 @@
 
 - name: Ensure build dependencies exists
   apt:
-    name: ['make', 'git', 'unzip', 'gcc','build-essential']
+    name: ['make', 'git', 'unzip', 'gcc','build-essential','acl']
     state: present
 
 - name: create polygon user
