@@ -19,6 +19,12 @@
   --txpool.accountqueue 64 \
   --txpool.globalqueue 131072 \
   --txpool.lifetime '1h30m0s' \
+  --ws \
+  --ws.addr 0.0.0.0 \
+  --ws.port 8546 \
+  --ws.origins '*' \
+  --ws.api "eth,net,web3" \
+  --ws.rpcprefix "/" \
 {% if bor_seeds is defined %}
   --bootnodes "{{ bor_seeds }}" \
 {% endif %}
