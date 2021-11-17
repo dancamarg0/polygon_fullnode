@@ -53,7 +53,7 @@ Note: You better download it in a tmux window + nohup or something similar for t
 
 1. cd /polygon/heimdall/data/
 2. tmux new -s heimdall
-3. nohup wget -O heimdall_snapshot.tar.gz https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/heimdall-snapshot-<TIMESTAMP>.tar.gz > /dev/null
+3. nohup wget -O heimdall_snapshot.tar.gz `SNAPSHOT_LINK.tar.gz` > /dev/null
 4. tar -zxvf heimdall_snapshot.tar.gz
 5. Ctrl + b then hit `d` to detach.
 
@@ -61,7 +61,7 @@ Note: You better download it in a tmux window + nohup or something similar for t
 
 1. cd /polygon/bor/data/bor/chaindata/
 2. tmux new -s bor
-3. nohup wget -O bor_snapshot.tar.gz https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/bor-pruned-snapshot-<TIMESTAMP>.tar.gz > /dev/null
+3. nohup wget -O bor_snapshot.tar.gz `SNAPSHOT_LINK.tar.gz` > /dev/null   ## I generally use the pruned one
 4. tar -zxvf bor_snapshot.tar.gz
 5. Ctrl + b then hit `d` to detach.
 
