@@ -61,7 +61,7 @@ Note: You better download it in a tmux window + nohup or something similar for t
 
 1. cd /polygon/bor/data/bor/chaindata/
 2. tmux new -s bor
-3. nohup wget -O bor_snapshot.tar.gz `SNAPSHOT_LINK.tar.gz` > /dev/null   ## I generally use the pruned one
+3. nohup wget -O bor_snapshot.tar.gz `SNAPSHOT_LINK.tar.gz` > /dev/null  (I generally use the pruned one)
 4. tar -zxvf bor_snapshot.tar.gz
 5. Ctrl + b then hit `d` to detach.
 
